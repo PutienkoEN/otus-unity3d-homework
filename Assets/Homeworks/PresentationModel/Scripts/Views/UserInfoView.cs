@@ -10,9 +10,9 @@ namespace Lessons.Architecture.PM.Views
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private Image iconImage;
 
-        public void ChangeName(string name)
+        public void ChangeName(string userName)
         {
-            nameText.text = name;
+            nameText.text = userName;
         }
 
         public void ChangeDescription(string description)
