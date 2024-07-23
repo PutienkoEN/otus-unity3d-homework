@@ -14,6 +14,12 @@ namespace Lessons.Architecture.PM.Mono
         [SerializeField] private PlayerLevelModel playerLevelModel;
         [SerializeField] private PlayerLevelView playerLevelView;
 
+        [SerializeField] private CharacterInfoPresenter characterInfoPresenter;
+        [SerializeField] private CharacterInfoModel characterInfoModel;
+
+        [SerializeField] private CharacterStatView characterStatViewPrefab;
+        [SerializeField] private Transform characterStatViewGridObject;
+
         private void Awake()
         {
             userInfoModel = new UserInfoModel();
@@ -24,6 +30,8 @@ namespace Lessons.Architecture.PM.Mono
             playerLevelPresenter = new PlayerLevelPresenter();
             playerLevelPresenter.Construct(playerLevelModel, playerLevelView);
             playerLevelView.Construct(playerLevelPresenter);
+
+            characterInfoPresenter.Construct(characterInfoModel, characterStatViewPrefab, characterStatViewGridObject);
         }
     }
 }
