@@ -1,22 +1,40 @@
+using System;
 using Lessons.Architecture.PM.Views;
+using Zenject;
 
 namespace Lessons.Architecture.PM.Mono
 {
-    public class PlayerLevelPresenter
+    public class PlayerLevelPresenter : IInitializable, IDisposable
     {
         private PlayerLevelModel playerLevelModel;
         private PlayerLevelView playerLevelView;
 
-        public void Construct(PlayerLevelModel playerLevelModel, PlayerLevelView playerLevelView)
+        [Inject]
+        public PlayerLevelPresenter(PlayerLevelModel playerLevelModel, PlayerLevelView playerLevelView)
         {
             this.playerLevelModel = playerLevelModel;
             this.playerLevelView = playerLevelView;
-
-            playerLevelModel.OnLevelUp += UpdateViewOnLevelUp;
-            playerLevelModel.OnExperienceChanged += UpdateViewForExperience;
         }
 
-        public void LevelUp()
+        public void Initialize()
+        {
+            playerLevelModel.OnLevelUp += UpdateViewOnLevelUp;
+            playerLevelModel.OnExperienceChanged += UpdateViewForExperience;
+
+            playerLevelView.SubscribeToLevelUpClick(LevelUp);
+
+            UpdateViewOnLevelUp();
+        }
+
+        public void Dispose()
+        {
+            playerLevelModel.OnLevelUp -= UpdateViewOnLevelUp;
+            playerLevelModel.OnExperienceChanged -= UpdateViewForExperience;
+
+            playerLevelView.UnsubscribeToLevelUpClick(LevelUp);
+        }
+
+        private void LevelUp()
         {
             playerLevelModel.LevelUp();
 

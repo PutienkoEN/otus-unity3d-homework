@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 
 namespace Lessons.Architecture.PM
 {
+    [Serializable]
     public sealed class CharacterStatModel
     {
         public event Action<int> OnValueChanged;

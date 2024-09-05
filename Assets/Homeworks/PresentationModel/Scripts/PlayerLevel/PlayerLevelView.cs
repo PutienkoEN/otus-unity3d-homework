@@ -1,6 +1,6 @@
-using Lessons.Architecture.PM.Mono;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Lessons.Architecture.PM.Views
@@ -14,9 +14,14 @@ namespace Lessons.Architecture.PM.Views
 
         [SerializeField] private Button levelUpButton;
 
-        public void Construct(PlayerLevelPresenter playerLevelPresenter)
+        public void SubscribeToLevelUpClick(UnityAction onLevelUp)
         {
-            levelUpButton.onClick.AddListener(playerLevelPresenter.LevelUp);
+            levelUpButton.onClick.AddListener(onLevelUp);
+        }
+
+        public void UnsubscribeToLevelUpClick(UnityAction onLevelUp)
+        {
+            levelUpButton.onClick.RemoveListener(onLevelUp);
         }
 
         public void AllowLevelUp(bool allowLevelUp)
