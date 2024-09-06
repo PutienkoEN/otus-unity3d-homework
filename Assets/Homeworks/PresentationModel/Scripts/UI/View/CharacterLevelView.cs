@@ -1,6 +1,7 @@
+using System;
 using TMPro;
+using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Lessons.Architecture.PM.Views
@@ -14,14 +15,10 @@ namespace Lessons.Architecture.PM.Views
 
         [SerializeField] private Button levelUpButton;
 
-        public void SubscribeToLevelUpClick(UnityAction onLevelUp)
-        {
-            levelUpButton.onClick.AddListener(onLevelUp);
-        }
 
-        public void UnsubscribeToLevelUpClick(UnityAction onLevelUp)
+        public IObservable<Unit> OnLevelUpButtonClick()
         {
-            levelUpButton.onClick.RemoveListener(onLevelUp);
+            return levelUpButton.OnClickAsObservable();
         }
 
         public void AllowLevelUp(bool allowLevelUp)

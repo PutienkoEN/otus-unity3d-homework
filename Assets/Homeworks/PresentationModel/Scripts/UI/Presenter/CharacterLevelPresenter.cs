@@ -1,13 +1,16 @@
 using System;
 using Lessons.Architecture.PM.Views;
+using UniRx;
 using Zenject;
 
 namespace Lessons.Architecture.PM.Mono
 {
     public class CharacterLevelPresenter : IInitializable, IDisposable
     {
-        private CharacterLevelModel characterLevelModel;
-        private CharacterLevelView characterLevelView;
+        private readonly CompositeDisposable compositeDisposable = new();
+
+        private readonly CharacterLevelModel characterLevelModel;
+        private readonly CharacterLevelView characterLevelView;
 
         [Inject]
         public CharacterLevelPresenter(CharacterLevelModel characterLevelModel, CharacterLevelView characterLevelView)
@@ -18,61 +21,49 @@ namespace Lessons.Architecture.PM.Mono
 
         public void Initialize()
         {
-            characterLevelModel.OnLevelUp += UpdateViewOnLevelUp;
-            characterLevelModel.OnExperienceChanged += UpdateViewForExperience;
+            characterLevelModel.CurrentLevel
+                .Subscribe(UpdateViewForLevel)
+                .AddTo(compositeDisposable);
 
-            characterLevelView.SubscribeToLevelUpClick(LevelUp);
+            characterLevelModel.CurrentExperience
+                .Subscribe(UpdateViewForExperience)
+                .AddTo(compositeDisposable);
 
-            UpdateViewOnLevelUp();
+            characterLevelModel.CanLevelUp
+                .Subscribe(UpdateViewForLevelUpButton)
+                .AddTo(compositeDisposable);
+            
+            characterLevelView.OnLevelUpButtonClick()
+                .Subscribe(LevelUp)
+                .AddTo(compositeDisposable);
         }
 
         public void Dispose()
         {
-            characterLevelModel.OnLevelUp -= UpdateViewOnLevelUp;
-            characterLevelModel.OnExperienceChanged -= UpdateViewForExperience;
-
-            characterLevelView.UnsubscribeToLevelUpClick(LevelUp);
+            compositeDisposable.Dispose();
         }
 
-        private void LevelUp()
+        private void UpdateViewForLevel(int level)
         {
-            characterLevelModel.LevelUp();
-
-            UpdateViewOnLevelUp();
-        }
-
-        private void UpdateViewOnLevelUp()
-        {
-            UpdateViewForLevel();
-            UpdateViewForExperience();
-        }
-
-        private void UpdateViewForLevel()
-        {
-            var currentLevel = characterLevelModel.CurrentLevel;
-            var currentLevelText = "Level: " + currentLevel;
+            var currentLevelText = "Level: " + level;
             characterLevelView.ChangeLevel(currentLevelText);
         }
 
-        // I assume we can't change model, so this method required only to pass to View.
-        private void UpdateViewForExperience(int currentExperience)
-        {
-            UpdateViewForExperience();
-        }
-
-        private void UpdateViewForExperience()
+        private void UpdateViewForExperience(int _)
         {
             var sliderData = CreateSliderData();
             characterLevelView.ChangeExperience(sliderData);
+        }
 
-            var canLevelUp = characterLevelModel.CanLevelUp();
+        private void UpdateViewForLevelUpButton(bool canLevelUp)
+        {
             characterLevelView.AllowLevelUp(canLevelUp);
         }
 
         private CharacterLevelView.PlayerLevelSliderData CreateSliderData()
         {
-            var requiredExperience = characterLevelModel.RequiredExperience;
-            var currentExperience = characterLevelModel.CurrentExperience;
+            var requiredExperience = characterLevelModel.RequiredExperience.Value;
+            var currentExperience = characterLevelModel.CurrentExperience.Value;
 
             var experienceText = $"XP: {currentExperience} / {requiredExperience}";
 
@@ -82,6 +73,11 @@ namespace Lessons.Architecture.PM.Mono
                 currentExperience,
                 experienceText
             );
+        }
+
+        private void LevelUp(Unit _)
+        {
+            characterLevelModel.LevelUp();
         }
     }
 }

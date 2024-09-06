@@ -14,6 +14,8 @@ namespace Lessons.Architecture.PM.Mono
         [Space] [Header("Data Debug")] [SerializeField]
         private UserInfoModel userInfoModel;
 
+        [SerializeField] private CharacterLevelModel characterLevelModel;
+
         public override void InstallBindings()
         {
             Container
@@ -23,20 +25,21 @@ namespace Lessons.Architecture.PM.Mono
                 .NonLazy();
 
             Container
+                .Bind<CharacterLevelModel>()
+                .AsSingle()
+                .NonLazy();
+
+            Container
                 .Bind<CharacterInfoModel>()
                 .AsSingle()
                 .OnInstantiated<CharacterInfoModel>(
                     (_, characterInfoModel) => SetupCharacterInfoModel(characterInfoModel))
                 .NonLazy();
 
-            Container
-                .Bind<CharacterLevelModel>()
-                .AsSingle()
-                .NonLazy();
 
             userInfoModel = Container.Resolve<UserInfoModel>();
+            characterLevelModel = Container.Resolve<CharacterLevelModel>();
         }
-
 
         private void SetupUserInfo(UserInfoModel userInfoModel)
         {
