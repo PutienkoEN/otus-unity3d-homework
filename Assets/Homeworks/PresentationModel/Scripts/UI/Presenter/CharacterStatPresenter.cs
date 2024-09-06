@@ -1,20 +1,31 @@
 using System;
+using UniRx;
+using Zenject;
 using Object = UnityEngine.Object;
 
 namespace Lessons.Architecture.PM
 {
-    public class CharacterStatPresenter : IDisposable
+    public class CharacterStatPresenter : IInitializable, IDisposable
     {
+        private readonly CompositeDisposable compositeDisposable = new();
+
         private readonly CharacterStatModel characterStatModel;
         private readonly CharacterStatView characterStatView;
 
+        [Inject]
         public CharacterStatPresenter(CharacterStatModel characterStatModel, CharacterStatView characterStatView)
         {
             this.characterStatModel = characterStatModel;
             this.characterStatView = characterStatView;
+        }
 
-            characterStatModel.OnValueChanged += UpdateStatValue;
-            UpdateStatValue(characterStatModel.Value);
+        public void Initialize()
+        {
+            characterStatModel.Value
+                .Subscribe(UpdateStatValue)
+                .AddTo(compositeDisposable);
+
+            UpdateStatValue(characterStatModel.Value.Value);
         }
 
         private void UpdateStatValue(int statValue)
@@ -23,15 +34,10 @@ namespace Lessons.Architecture.PM
             characterStatView.UpdateStatValue(newStatText);
         }
 
-        public bool IsSameStat(CharacterStatModel characterStatModelToCheck)
-        {
-            return characterStatModel == characterStatModelToCheck;
-        }
-
         public void Dispose()
         {
+            compositeDisposable.Dispose();
             Object.Destroy(characterStatView);
-            characterStatModel.OnValueChanged -= UpdateStatValue;
         }
     }
 }

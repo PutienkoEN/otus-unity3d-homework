@@ -1,26 +1,25 @@
 using System;
 using Sirenix.OdinInspector;
+using UniRx;
 
 namespace Lessons.Architecture.PM
 {
     [Serializable]
     public sealed class CharacterStatModel
     {
-        public event Action<int> OnValueChanged;
-        [ShowInInspector, ReadOnly] public string Name { get; private set; }
-        [ShowInInspector, ReadOnly] public int Value { get; private set; }
+        [ShowInInspector, ReadOnly] public StringReactiveProperty Name { get; private set; } = new();
+        [ShowInInspector, ReadOnly] public IntReactiveProperty Value { get; private set; } = new();
 
         public CharacterStatModel(string name, int value)
         {
-            Name = name;
-            Value = value;
+            Name.Value = name;
+            Value.Value = value;
         }
 
         [Button]
         public void ChangeValue(int value)
         {
-            Value = value;
-            OnValueChanged?.Invoke(value);
+            Value.Value = value;
         }
     }
 }

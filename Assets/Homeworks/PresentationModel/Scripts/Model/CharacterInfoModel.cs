@@ -1,51 +1,39 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using UniRx;
 
 namespace Lessons.Architecture.PM
 {
     [Serializable]
     public sealed class CharacterInfoModel
     {
-        public event Action<CharacterStatModel> OnStatAdded;
-        public event Action<CharacterStatModel> OnStatRemoved;
-
-        [ShowInInspector] private readonly HashSet<CharacterStatModel> stats = new();
+        [ShowInInspector] public readonly ReactiveCollection<CharacterStatModel> stats = new();
 
         [Button]
         public void AddStat(string name, int value)
         {
-            var characterStatModel = new CharacterStatModel(name, value);
-            if (stats.Add(characterStatModel))
-            {
-                OnStatAdded?.Invoke(characterStatModel);
-            }
+            var statModel = new CharacterStatModel(name, value);
+            stats.Add(statModel);
         }
 
         [Button]
         public void AddStat(CharacterStatModel statModel)
         {
-            if (stats.Add(statModel))
-            {
-                OnStatAdded?.Invoke(statModel);
-            }
+            stats.Add(statModel);
         }
 
         [Button]
         public void RemoveStat(CharacterStatModel statModel)
         {
-            if (stats.Remove(statModel))
-            {
-                OnStatRemoved?.Invoke(statModel);
-            }
+            stats.Remove(statModel);
         }
 
         public CharacterStatModel GetStat(string name)
         {
             foreach (var stat in stats)
             {
-                if (stat.Name == name)
+                if (stat.Name.Value == name)
                 {
                     return stat;
                 }

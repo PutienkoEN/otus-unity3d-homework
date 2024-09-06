@@ -914,6 +914,7 @@ GameObject:
   - component: {fileID: 529645856}
   - component: {fileID: 529645858}
   - component: {fileID: 529645857}
+  - component: {fileID: 529645859}
   m_Layer: 5
   m_Name: Popup
   m_TagString: Untagged
@@ -975,6 +976,20 @@ MonoBehaviour:
   nameText: {fileID: 983369944}
   descriptionText: {fileID: 70504735}
   iconImage: {fileID: 757895455}
+--- !u!114 &529645859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529645855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c129bbd49a1c4be0af44c85387bb9953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  container: {fileID: 1017263399}
+  characterStatViewPrefab: {fileID: 1199871112}
 --- !u!1 &745804817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,6 +1585,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1573665971301647696}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1199871112 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2230682214970619787, guid: 26edfc76587626a4cb6e744cd01d0e99,
+    type: 3}
+  m_PrefabInstance: {fileID: 1573665971301647696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a76a402573430db568714a247b1d90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1257220427
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,7 +2228,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a11a0e717e4bf6a795d6cea7deed95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: c5293f68508574aa4aeb4f018b580f2b, type: 3}
+  userName: The Name!
+  userDescription: The Description!
+  userIcon: {fileID: 21300000, guid: 7c0892898786946a98a1057c9873611a, type: 3}
+  characterStats:
+  - Int
+  - Str
+  - Agi
 --- !u!114 &1800196413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2215,7 +2248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userInfoView: {fileID: 529645858}
-  playerLevelView: {fileID: 529645857}
+  characterLevelView: {fileID: 529645857}
+  characterInfoView: {fileID: 529645859}
 --- !u!114 &1800196414
 MonoBehaviour:
   m_ObjectHideFlags: 0

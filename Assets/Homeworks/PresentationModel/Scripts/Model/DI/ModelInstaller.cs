@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -11,17 +12,14 @@ namespace Lessons.Architecture.PM.Mono
         [SerializeField] private string userDescription;
         [SerializeField] private Sprite userIcon;
 
-        [Space] [Header("Data Debug")] [SerializeField]
-        private UserInfoModel userInfoModel;
-
-        [SerializeField] private CharacterLevelModel characterLevelModel;
+        [SerializeField] private List<string> characterStats;
 
         public override void InstallBindings()
         {
             Container
                 .Bind<UserInfoModel>()
                 .AsSingle()
-                .OnInstantiated<UserInfoModel>((_, userInfoModel) => SetupUserInfo(userInfoModel))
+                .OnInstantiated<UserInfoModel>((_, it) => SetupUserInfo(it))
                 .NonLazy();
 
             Container
@@ -33,12 +31,8 @@ namespace Lessons.Architecture.PM.Mono
                 .Bind<CharacterInfoModel>()
                 .AsSingle()
                 .OnInstantiated<CharacterInfoModel>(
-                    (_, characterInfoModel) => SetupCharacterInfoModel(characterInfoModel))
+                    (_, characterInfo) => SetupCharacterInfoModel(characterInfo))
                 .NonLazy();
-
-
-            userInfoModel = Container.Resolve<UserInfoModel>();
-            characterLevelModel = Container.Resolve<CharacterLevelModel>();
         }
 
         private void SetupUserInfo(UserInfoModel userInfoModel)
@@ -51,7 +45,10 @@ namespace Lessons.Architecture.PM.Mono
 
         private void SetupCharacterInfoModel(CharacterInfoModel characterInfoModel)
         {
-            // TODO: Implement it.
+            foreach (var characterStat in characterStats)
+            {
+                characterInfoModel.stats.Add(new CharacterStatModel(characterStat, 10));
+            }
         }
     }
 }

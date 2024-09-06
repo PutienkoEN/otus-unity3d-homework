@@ -1,59 +1,66 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Object = UnityEngine.Object;
+using Homeworks.PresentationModel.Scripts.UI.View;
+using UniRx;
+using Zenject;
 
 namespace Lessons.Architecture.PM
 {
-    [Serializable]
-    public class CharacterInfoPresenter
+    public class CharacterInfoPresenter : IInitializable, IDisposable
     {
-        [SerializeField] private CharacterInfoModel characterInfoModel;
+        private readonly CompositeDisposable compositeDisposable = new();
 
-        private List<CharacterStatPresenter> characterStatPresenters = new();
+        private readonly CharacterInfoModel characterInfoModel;
+        private readonly CharacterInfoView characterInfoView;
 
-        private Transform characterStatGrid;
-        private CharacterStatView characterStatViewPrefab;
+        private readonly Dictionary<CharacterStatModel, CharacterStatPresenter> characterStatModelToPresenter = new();
 
-        public void Construct(
-            CharacterInfoModel characterInfoModel,
-            CharacterStatView characterStatViewPrefab,
-            Transform characterStatGrid
-        )
+        [Inject]
+        public CharacterInfoPresenter(CharacterInfoModel characterInfoModel, CharacterInfoView characterInfoView)
         {
             this.characterInfoModel = characterInfoModel;
-            this.characterStatViewPrefab = characterStatViewPrefab;
-            this.characterStatGrid = characterStatGrid;
-
-            characterInfoModel.OnStatAdded += AddNewStat;
-            characterInfoModel.OnStatRemoved += RemoveStat;
-
-            CreateStat();
+            this.characterInfoView = characterInfoView;
         }
 
-        private void AddNewStat(CharacterStatModel characterStatModel)
+        public void Initialize()
         {
-            var characterStatView = Object.Instantiate(characterStatViewPrefab, characterStatGrid);
+            characterInfoModel.stats
+                .ObserveAdd()
+                .Subscribe(v => OnStatAdded(v.Value))
+                .AddTo(compositeDisposable);
 
-            var characterStatPresenter = new CharacterStatPresenter(characterStatModel, characterStatView);
-            characterStatPresenters.Add(characterStatPresenter);
+            characterInfoModel.stats
+                .ObserveRemove()
+                .Subscribe(v => OnStatRemoved(v.Value))
+                .AddTo(compositeDisposable);
+            
+            foreach (var characterStatModel in characterInfoModel.stats)
+            {
+                OnStatAdded(characterStatModel);
+            }
         }
 
-        private void RemoveStat(CharacterStatModel characterStatModel)
+        public void Dispose()
         {
-            var statPresenters = characterStatPresenters
-                .FindAll(presenter => presenter.IsSameStat(characterStatModel));
-
-            characterStatPresenters
-                .RemoveAll(presenter => presenter.IsSameStat(characterStatModel));
-
-            statPresenters.ForEach(presenter => presenter.Dispose());
+            compositeDisposable.Dispose();
         }
 
-        public void CreateStat()
+        private void OnStatAdded(CharacterStatModel statModel)
         {
-            var characterStatModel = new CharacterStatModel("Strength", 5);
-            characterInfoModel.AddStat(characterStatModel);
+            var characterStatView = characterInfoView.Add();
+            var characterStatPresenter = new CharacterStatPresenter(statModel, characterStatView);
+            characterStatPresenter.Initialize();
+
+            characterStatModelToPresenter.Add(statModel, characterStatPresenter);
+        }
+
+        private void OnStatRemoved(CharacterStatModel statModel)
+        {
+            if (characterStatModelToPresenter.TryGetValue(statModel, out var characterStatPresenter))
+            {
+                characterStatPresenter.Dispose();
+                characterStatModelToPresenter.Remove(statModel);
+            }
         }
     }
 }
