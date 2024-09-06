@@ -1,6 +1,6 @@
 using System;
 using Lessons.Architecture.PM.Views;
-using UnityEngine;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +8,7 @@ namespace Lessons.Architecture.PM.Mono
 {
     public class UserInfoPresenter : IInitializable, IDisposable
     {
+        private readonly CompositeDisposable disposable = new();
         private readonly UserInfoModel userInfoModel;
         private readonly UserInfoView userInfoView;
 
@@ -20,21 +21,22 @@ namespace Lessons.Architecture.PM.Mono
 
         public void Initialize()
         {
-            userInfoModel.OnNameChanged += ChangeName;
-            userInfoModel.OnDescriptionChanged += userInfoView.ChangeDescription;
-            userInfoModel.OnIconChanged += userInfoView.ChangeIcon;
+            userInfoModel.Name
+                .Subscribe(ChangeName)
+                .AddTo(disposable);
 
-            // At this point model already has some data, so we change view with existing data.
-            ChangeName(userInfoModel.Name);
-            ChangeDescription(userInfoModel.Description);
-            ChangeIcon(userInfoModel.Icon);
+            userInfoModel.Description
+                .Subscribe(ChangeDescription)
+                .AddTo(disposable);
+
+            userInfoModel.Icon
+                .Subscribe(ChangeIcon)
+                .AddTo(disposable);
         }
 
         public void Dispose()
         {
-            userInfoModel.OnNameChanged -= userInfoView.ChangeName;
-            userInfoModel.OnDescriptionChanged -= userInfoView.ChangeDescription;
-            userInfoModel.OnIconChanged -= userInfoView.ChangeIcon;
+            disposable.Dispose();
         }
 
         private void ChangeName(string name)

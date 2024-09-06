@@ -5,9 +5,14 @@ namespace Lessons.Architecture.PM.Mono
 {
     public class ModelInstaller : MonoInstaller
     {
-        [Header("User Data")] [SerializeField] private string userName;
+        [Header("User Data (Use to configure initial values)")] [SerializeField]
+        private string userName;
+
         [SerializeField] private string userDescription;
         [SerializeField] private Sprite userIcon;
+
+        [Space] [Header("Data Debug")] [SerializeField]
+        private UserInfoModel userInfoModel;
 
         public override void InstallBindings()
         {
@@ -28,6 +33,8 @@ namespace Lessons.Architecture.PM.Mono
                 .Bind<CharacterLevelModel>()
                 .AsSingle()
                 .NonLazy();
+
+            userInfoModel = Container.Resolve<UserInfoModel>();
         }
 
 
