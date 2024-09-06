@@ -1,13 +1,15 @@
 using System;
 using Lessons.Architecture.PM.Views;
+using UnityEngine;
+using UnityEngine;
 using Zenject;
 
 namespace Lessons.Architecture.PM.Mono
 {
     public class UserInfoPresenter : IInitializable, IDisposable
     {
-        private UserInfoModel userInfoModel;
-        private UserInfoView userInfoView;
+        private readonly UserInfoModel userInfoModel;
+        private readonly UserInfoView userInfoView;
 
         [Inject]
         public UserInfoPresenter(UserInfoModel userInfoModel, UserInfoView userInfoView)
@@ -24,8 +26,15 @@ namespace Lessons.Architecture.PM.Mono
 
             // At this point model already has some data, so we change view with existing data.
             ChangeName(userInfoModel.Name);
-            userInfoView.ChangeDescription(userInfoModel.Description);
-            userInfoView.ChangeIcon(userInfoModel.Icon);
+            ChangeDescription(userInfoModel.Description);
+            ChangeIcon(userInfoModel.Icon);
+        }
+
+        public void Dispose()
+        {
+            userInfoModel.OnNameChanged -= userInfoView.ChangeName;
+            userInfoModel.OnDescriptionChanged -= userInfoView.ChangeDescription;
+            userInfoModel.OnIconChanged -= userInfoView.ChangeIcon;
         }
 
         private void ChangeName(string name)
@@ -34,11 +43,14 @@ namespace Lessons.Architecture.PM.Mono
             userInfoView.ChangeName(nameWithPrefix);
         }
 
-        public void Dispose()
+        private void ChangeDescription(string description)
         {
-            userInfoModel.OnNameChanged -= userInfoView.ChangeName;
-            userInfoModel.OnDescriptionChanged -= userInfoView.ChangeDescription;
-            userInfoModel.OnIconChanged -= userInfoView.ChangeIcon;
+            userInfoView.ChangeDescription(description);
+        }
+
+        private void ChangeIcon(Sprite icon)
+        {
+            userInfoView.ChangeIcon(icon);
         }
     }
 }
