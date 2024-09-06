@@ -1,5 +1,6 @@
 using Lessons.Architecture.PM.Views;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace Lessons.Architecture.PM.Mono.DI
@@ -7,7 +8,7 @@ namespace Lessons.Architecture.PM.Mono.DI
     public class PopupInstaller : MonoInstaller
     {
         [SerializeField] private UserInfoView userInfoView;
-        [SerializeField] private PlayerLevelView playerLevelView;
+        [FormerlySerializedAs("playerLevelView")] [SerializeField] private CharacterLevelView characterLevelView;
 
         public override void InstallBindings()
         {
@@ -21,11 +22,11 @@ namespace Lessons.Architecture.PM.Mono.DI
                 .NonLazy();
 
             Container
-                .BindInstance(playerLevelView)
+                .BindInstance(characterLevelView)
                 .AsSingle();
             
             Container
-                .BindInterfacesAndSelfTo<PlayerLevelPresenter>()
+                .BindInterfacesAndSelfTo<CharacterLevelPresenter>()
                 .AsSingle()
                 .NonLazy();
         }

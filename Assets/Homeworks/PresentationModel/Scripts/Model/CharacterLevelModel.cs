@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 namespace Lessons.Architecture.PM
 {
     [Serializable]
-    public sealed class PlayerLevelModel
+    public sealed class CharacterLevelModel
     {
         public event Action OnLevelUp;
         public event Action<int> OnExperienceChanged;

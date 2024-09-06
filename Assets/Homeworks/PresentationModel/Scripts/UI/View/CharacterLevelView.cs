@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Lessons.Architecture.PM.Views
 {
-    public class PlayerLevelView : MonoBehaviour
+    public class CharacterLevelView : MonoBehaviour
     {
         [SerializeField] private TMP_Text levelText;
 

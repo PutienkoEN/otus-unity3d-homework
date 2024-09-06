@@ -25,7 +25,7 @@ namespace Lessons.Architecture.PM.Mono
                 .NonLazy();
 
             Container
-                .Bind<PlayerLevelModel>()
+                .Bind<CharacterLevelModel>()
                 .AsSingle()
                 .NonLazy();
         }
