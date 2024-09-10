@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace Lessons.Architecture.PM.Mono
+namespace Lessons.Architecture.PresentationModel
 {
     public class ModelInstaller : MonoInstaller
     {

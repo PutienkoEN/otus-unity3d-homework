@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Lessons.Architecture.PM.Views
+namespace Lessons.Architecture.PresentationModel
 {
     public class CharacterLevelView : MonoBehaviour
     {

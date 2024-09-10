@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Homeworks.PresentationModel.Scripts.UI.View;
 using UniRx;
 using Zenject;
 
-namespace Lessons.Architecture.PM
+namespace Lessons.Architecture.PresentationModel
 {
     public class CharacterInfoPresenter : IInitializable, IDisposable
     {
@@ -33,7 +32,7 @@ namespace Lessons.Architecture.PM
                 .ObserveRemove()
                 .Subscribe(v => OnStatRemoved(v.Value))
                 .AddTo(compositeDisposable);
-            
+
             foreach (var characterStatModel in characterInfoModel.stats)
             {
                 OnStatAdded(characterStatModel);

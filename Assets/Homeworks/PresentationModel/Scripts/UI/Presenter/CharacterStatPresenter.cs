@@ -3,7 +3,7 @@ using UniRx;
 using Zenject;
 using Object = UnityEngine.Object;
 
-namespace Lessons.Architecture.PM
+namespace Lessons.Architecture.PresentationModel
 {
     public class CharacterStatPresenter : IInitializable, IDisposable
     {

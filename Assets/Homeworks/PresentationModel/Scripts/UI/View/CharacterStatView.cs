@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Lessons.Architecture.PM
+namespace Lessons.Architecture.PresentationModel
 {
     public class CharacterStatView : MonoBehaviour
     {

@@ -40,6 +40,7 @@ MonoBehaviour:
     - Assembly-CSharp
     - BehaviourTree
     - Atomic
+    - UniRx
     - Windows
     - Products
     - Cinemachine
@@ -56,6 +57,7 @@ MonoBehaviour:
     - GameSystem
     - Entities
     - AICommands
+    - UniRx.Examples
     - Blackboards
     - CustomAnimations
     - Assembly-CSharp-firstpass
@@ -75,8 +77,6 @@ MonoBehaviour:
     - Sirenix.OdinInspector.CompatibilityLayer
     - UniTask.TextMeshPro
     - Input
-    - UniRx
-    - UniRx.Examples
     - PPv2URPConverters
     - GOAP (EditMode)
     - Sirenix.OdinInspector.CompatibilityLayer.Editor

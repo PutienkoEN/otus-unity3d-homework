@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Lessons.Architecture.PM;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Homeworks.PresentationModel.Scripts.UI.View
+namespace Lessons.Architecture.PresentationModel
 {
     public class CharacterInfoView : MonoBehaviour
     {

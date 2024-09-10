@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
 
-namespace Lessons.Architecture.PM
+namespace Lessons.Architecture.PresentationModel
 {
     [Serializable]
     public sealed class UserInfoModel

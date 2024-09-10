@@ -1,10 +1,9 @@
 using System;
-using Lessons.Architecture.PM.Views;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace Lessons.Architecture.PM.Mono
+namespace Lessons.Architecture.PresentationModel
 {
     public class UserInfoPresenter : IInitializable, IDisposable
     {

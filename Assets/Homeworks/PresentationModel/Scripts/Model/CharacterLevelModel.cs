@@ -2,7 +2,7 @@ using System;
 using Sirenix.OdinInspector;
 using UniRx;
 
-namespace Lessons.Architecture.PM
+namespace Lessons.Architecture.PresentationModel
 {
     [Serializable]
     public sealed class CharacterLevelModel

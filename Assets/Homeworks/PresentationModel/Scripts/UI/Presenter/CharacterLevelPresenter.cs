@@ -1,9 +1,8 @@
 using System;
-using Lessons.Architecture.PM.Views;
 using UniRx;
 using Zenject;
 
-namespace Lessons.Architecture.PM.Mono
+namespace Lessons.Architecture.PresentationModel
 {
     public class CharacterLevelPresenter : IInitializable, IDisposable
     {
@@ -32,7 +31,7 @@ namespace Lessons.Architecture.PM.Mono
             characterLevelModel.CanLevelUp
                 .Subscribe(UpdateViewForLevelUpButton)
                 .AddTo(compositeDisposable);
-            
+
             characterLevelView.OnLevelUpButtonClick()
                 .Subscribe(LevelUp)
                 .AddTo(compositeDisposable);

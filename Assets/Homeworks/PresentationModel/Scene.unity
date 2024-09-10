@@ -1412,11 +1412,11 @@ MonoBehaviour:
     m_Bottom: 50
   m_ChildAlignment: 0
   m_StartCorner: 0
-  m_StartAxis: 1
+  m_StartAxis: 0
   m_CellSize: {x: 500, y: 100}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Constraint: 1
+  m_ConstraintCount: 3
 --- !u!1 &1055201178
 GameObject:
   m_ObjectHideFlags: 0
@@ -2235,6 +2235,9 @@ MonoBehaviour:
   - Int
   - Str
   - Agi
+  - Char
+  - Dex
+  - Vit
 --- !u!114 &1800196413
 MonoBehaviour:
   m_ObjectHideFlags: 0

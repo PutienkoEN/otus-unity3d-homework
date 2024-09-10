@@ -1,9 +1,7 @@
-using Homeworks.PresentationModel.Scripts.UI.View;
-using Lessons.Architecture.PM.Views;
 using UnityEngine;
 using Zenject;
 
-namespace Lessons.Architecture.PM.Mono.DI
+namespace Lessons.Architecture.PresentationModel
 {
     public class PopupInstaller : MonoInstaller
     {
