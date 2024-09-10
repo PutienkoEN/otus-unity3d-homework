@@ -1,7 +1,6 @@
 using System;
 using UniRx;
 using Zenject;
-using Object = UnityEngine.Object;
 
 namespace Lessons.Architecture.PresentationModel
 {
@@ -11,12 +10,16 @@ namespace Lessons.Architecture.PresentationModel
 
         private readonly CharacterStatModel characterStatModel;
         private readonly CharacterStatView characterStatView;
+        public event Action<CharacterStatView> OnRemove;
 
-        [Inject]
-        public CharacterStatPresenter(CharacterStatModel characterStatModel, CharacterStatView characterStatView)
+        public CharacterStatPresenter(
+            CharacterStatModel characterStatModel,
+            CharacterStatView characterStatView,
+            Action<CharacterStatView> remove)
         {
             this.characterStatModel = characterStatModel;
             this.characterStatView = characterStatView;
+            this.OnRemove += remove;
         }
 
         public void Initialize()
@@ -36,8 +39,8 @@ namespace Lessons.Architecture.PresentationModel
 
         public void Dispose()
         {
+            OnRemove?.Invoke(characterStatView);
             compositeDisposable.Dispose();
-            Object.Destroy(characterStatView);
         }
     }
 }

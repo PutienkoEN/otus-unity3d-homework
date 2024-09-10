@@ -47,9 +47,14 @@ namespace Lessons.Architecture.PresentationModel
         private void OnStatAdded(CharacterStatModel statModel)
         {
             var characterStatView = characterInfoView.Add();
-            var characterStatPresenter = new CharacterStatPresenter(statModel, characterStatView);
-            characterStatPresenter.Initialize();
 
+            var characterStatPresenter = new CharacterStatPresenter(
+                statModel,
+                characterStatView,
+                characterInfoView.Remove);
+
+            characterStatPresenter.Initialize();
+            
             characterStatModelToPresenter.Add(statModel, characterStatPresenter);
         }
 
