@@ -23,7 +23,7 @@ namespace Lessons.Architecture.PresentationModel
                 .AsSingle();
 
             Container
-                .BindInterfacesAndSelfTo<CharacterInfoPresenter>()
+                .BindInterfacesAndSelfTo<CharacterInfoController>()
                 .AsSingle()
                 .NonLazy();
         }
@@ -35,7 +35,7 @@ namespace Lessons.Architecture.PresentationModel
                 .AsSingle();
 
             Container
-                .BindInterfacesAndSelfTo<CharacterLevelPresenter>()
+                .BindInterfacesAndSelfTo<CharacterLevelController>()
                 .AsSingle()
                 .NonLazy();
         }
@@ -47,7 +47,7 @@ namespace Lessons.Architecture.PresentationModel
                 .AsSingle();
 
             Container
-                .BindInterfacesAndSelfTo<UserInfoPresenter>()
+                .BindInterfacesAndSelfTo<UserInfoController>()
                 .AsSingle()
                 .NonLazy();
         }

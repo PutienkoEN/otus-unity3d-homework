@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Lessons.Architecture.PresentationModel
 {
-    public class CharacterLevelPresenter : IInitializable, IDisposable
+    public class CharacterLevelController : IInitializable, IDisposable
     {
         private readonly CompositeDisposable compositeDisposable = new();
 
@@ -12,7 +12,7 @@ namespace Lessons.Architecture.PresentationModel
         private readonly CharacterLevelView characterLevelView;
 
         [Inject]
-        public CharacterLevelPresenter(CharacterLevelModel characterLevelModel, CharacterLevelView characterLevelView)
+        public CharacterLevelController(CharacterLevelModel characterLevelModel, CharacterLevelView characterLevelView)
         {
             this.characterLevelModel = characterLevelModel;
             this.characterLevelView = characterLevelView;

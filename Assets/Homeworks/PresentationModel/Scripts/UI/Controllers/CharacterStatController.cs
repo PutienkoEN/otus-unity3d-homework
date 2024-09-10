@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Lessons.Architecture.PresentationModel
 {
-    public class CharacterStatPresenter : IInitializable, IDisposable
+    public class CharacterStatController : IInitializable, IDisposable
     {
         private readonly CompositeDisposable compositeDisposable = new();
 
@@ -12,7 +12,7 @@ namespace Lessons.Architecture.PresentationModel
         private readonly CharacterStatView characterStatView;
         public event Action<CharacterStatView> OnRemove;
 
-        public CharacterStatPresenter(
+        public CharacterStatController(
             CharacterStatModel characterStatModel,
             CharacterStatView characterStatView,
             Action<CharacterStatView> remove)

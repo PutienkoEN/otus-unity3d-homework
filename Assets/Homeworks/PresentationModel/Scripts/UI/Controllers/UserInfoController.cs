@@ -5,14 +5,14 @@ using Zenject;
 
 namespace Lessons.Architecture.PresentationModel
 {
-    public class UserInfoPresenter : IInitializable, IDisposable
+    public class UserInfoController : IInitializable, IDisposable
     {
         private readonly CompositeDisposable disposable = new();
         private readonly UserInfoModel userInfoModel;
         private readonly UserInfoView userInfoView;
 
         [Inject]
-        public UserInfoPresenter(UserInfoModel userInfoModel, UserInfoView userInfoView)
+        public UserInfoController(UserInfoModel userInfoModel, UserInfoView userInfoView)
         {
             this.userInfoModel = userInfoModel;
             this.userInfoView = userInfoView;

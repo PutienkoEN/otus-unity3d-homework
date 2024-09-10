@@ -5,17 +5,17 @@ using Zenject;
 
 namespace Lessons.Architecture.PresentationModel
 {
-    public class CharacterInfoPresenter : IInitializable, IDisposable
+    public class CharacterInfoController : IInitializable, IDisposable
     {
         private readonly CompositeDisposable compositeDisposable = new();
 
         private readonly CharacterInfoModel characterInfoModel;
         private readonly CharacterInfoView characterInfoView;
 
-        private readonly Dictionary<CharacterStatModel, CharacterStatPresenter> characterStatModelToPresenter = new();
+        private readonly Dictionary<CharacterStatModel, CharacterStatController> characterStatModelToPresenter = new();
 
         [Inject]
-        public CharacterInfoPresenter(CharacterInfoModel characterInfoModel, CharacterInfoView characterInfoView)
+        public CharacterInfoController(CharacterInfoModel characterInfoModel, CharacterInfoView characterInfoView)
         {
             this.characterInfoModel = characterInfoModel;
             this.characterInfoView = characterInfoView;
@@ -48,7 +48,7 @@ namespace Lessons.Architecture.PresentationModel
         {
             var characterStatView = characterInfoView.Add();
 
-            var characterStatPresenter = new CharacterStatPresenter(
+            var characterStatPresenter = new CharacterStatController(
                 statModel,
                 characterStatView,
                 characterInfoView.Remove);
