@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Homeworks.SaveLoad
 {
@@ -6,12 +7,12 @@ namespace Homeworks.SaveLoad
     {
         public void LoadGame()
         {
-            throw new NotImplementedException();
+            Debug.Log("Unit loaded");
         }
 
         public void SaveGame()
         {
-            throw new NotImplementedException();
+            Debug.Log("Unit saved");
         }
     }
 }
