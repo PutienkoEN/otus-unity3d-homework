@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -5,8 +6,8 @@ namespace Homeworks.SaveLoad
 {
     public class UnitSaveLoader : ISaveLoader
     {
-        private UnitManager unitManager;
-        private MyGameRepository gameRepository;
+        private readonly UnitManager unitManager;
+        private readonly MyGameRepository gameRepository;
 
         [Inject]
         public UnitSaveLoader(UnitManager unitManager, MyGameRepository gameRepository)
@@ -15,24 +16,28 @@ namespace Homeworks.SaveLoad
             this.gameRepository = gameRepository;
         }
 
-        public void SaveGame()
+        public void SaveData()
         {
-            Debug.Log("Unit saved");
             var units = unitManager.GetUnits();
-
             var unitData = units.ConvertAll(unit => new UnitData
             {
                 HitPoints = unit.hitPoints,
                 Damage = unit.damage,
                 Speed = unit.speed
             });
-            
+
             gameRepository.SetData(unitData);
+            Debug.Log("Units saved");
         }
 
-        public void LoadGame()
+        public void LoadData()
         {
-            Debug.Log("Unit loaded");
+            if (gameRepository.TryGetData<List<UnitData>>(out var unitsData))
+            {
+                unitsData.ForEach(unitData => Debug.Log(unitData));
+            }
+
+            Debug.Log("Units loaded");
         }
 
         class UnitData

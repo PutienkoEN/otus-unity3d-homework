@@ -19,14 +19,15 @@ namespace Homeworks.SaveLoad
         [Button]
         public void SaveGame()
         {
-            saveLoaders.ForEach(saveLoader => saveLoader.SaveGame());
+            saveLoaders.ForEach(saveLoader => saveLoader.SaveData());
             gameRepository.Save();
         }
 
         [Button]
         public void LoadGame()
         {
-            saveLoaders.ForEach(saveLoader => saveLoader.LoadGame());
+            gameRepository.Load();
+            saveLoaders.ForEach(saveLoader => saveLoader.LoadData());
         }
     }
 }

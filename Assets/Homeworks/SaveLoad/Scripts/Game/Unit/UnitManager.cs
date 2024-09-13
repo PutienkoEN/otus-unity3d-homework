@@ -16,5 +16,10 @@ namespace Homeworks.SaveLoad
         {
             return units;
         }
+
+        public void AddUnits(List<UnitObject> unit)
+        {
+            
+        }
     }
 }

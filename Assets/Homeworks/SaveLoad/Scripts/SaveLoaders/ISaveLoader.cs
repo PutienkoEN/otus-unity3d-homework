@@ -2,7 +2,7 @@ namespace Homeworks.SaveLoad
 {
     public interface ISaveLoader
     {
-        public void LoadGame();
-        public void SaveGame();
+        public void LoadData();
+        public void SaveData();
     }
 }
