@@ -7,11 +7,6 @@ namespace Homeworks.SaveLoad
         public override void InstallBindings()
         {
             Container
-                .Bind<MyGameManager>()
-                .FromComponentInHierarchy()
-                .AsSingle();
-
-            Container
                 .BindInterfacesAndSelfTo<UnitSaveLoader>()
                 .AsSingle();
 

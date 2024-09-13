@@ -5,14 +5,14 @@ namespace Homeworks.SaveLoad
 {
     public class UnitManager
     {
-        private readonly HashSet<UnitObject> units = new();
+        private readonly List<UnitObject> units = new();
 
         public UnitManager(UnitObject[] units)
         {
             this.units.AddRange(units);
         }
 
-        public HashSet<UnitObject> GetUnits()
+        public List<UnitObject> GetUnits()
         {
             return units;
         }
