@@ -5,6 +5,7 @@ namespace Homeworks.SaveLoad
 {
     public sealed class ResourceObject : MonoBehaviour
     {
+        [SerializeField] public string resourceTypeUid;
         [SerializeField] public ResourceType resourceType;
         [SerializeField] public int remainingCount;
 

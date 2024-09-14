@@ -1020,9 +1020,9 @@ GameObject:
   - component: {fileID: 1280606117}
   - component: {fileID: 1280606116}
   - component: {fileID: 1280606115}
+  - component: {fileID: 1280606121}
   - component: {fileID: 1280606119}
   - component: {fileID: 1280606120}
-  - component: {fileID: 1280606121}
   m_Layer: 0
   m_Name: '[DI Scene]'
   m_TagString: Untagged
