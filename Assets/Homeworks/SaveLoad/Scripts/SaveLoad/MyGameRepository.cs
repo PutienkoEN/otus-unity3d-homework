@@ -13,7 +13,7 @@ namespace Homeworks.SaveLoad
         public void SetData<T>(T value)
         {
             var serializedData = JsonConvert.SerializeObject(value);
-            context.Add(typeof(T).Name, serializedData);
+            context[typeof(T).Name] = serializedData;
         }
 
         public bool TryGetData<T>(out T value)
@@ -42,10 +42,7 @@ namespace Homeworks.SaveLoad
 
         public void Save()
         {
-            var serializedContext = JsonConvert.SerializeObject(context, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+            var serializedContext = JsonConvert.SerializeObject(context);
             PlayerPrefs.SetString(GameContextProperty, serializedContext);
         }
     }
