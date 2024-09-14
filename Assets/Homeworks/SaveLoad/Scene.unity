@@ -1041,7 +1041,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd452a9493d5450f877de9eab129a5d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPrefab: {fileID: 156552, guid: 37773be3ffa21ce4a89a9ab8b6243a4e, type: 3}
+  unitPrefab: {fileID: 808780621388218345, guid: 37773be3ffa21ce4a89a9ab8b6243a4e,
+    type: 3}
 --- !u!114 &1280606116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1827,14 +1828,6 @@ PrefabInstance:
     - target: {fileID: 460858, guid: 020b3f4b12d25014b82b80c9c91bcb03, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: speed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: hitPoints
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 020b3f4b12d25014b82b80c9c91bcb03, type: 3}

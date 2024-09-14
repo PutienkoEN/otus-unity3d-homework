@@ -5,7 +5,7 @@ namespace Homeworks.SaveLoad
 {
     public class UnitInstaller : MonoInstaller
     {
-        [SerializeField] private GameObject unitPrefab;
+        [SerializeField] private UnitObject unitPrefab;
 
         public override void InstallBindings()
         {
