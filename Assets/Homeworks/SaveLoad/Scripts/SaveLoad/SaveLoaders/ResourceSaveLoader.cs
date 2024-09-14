@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Homeworks.SaveLoad.Data;
 using UnityEngine;
 using Zenject;
 
@@ -21,7 +22,11 @@ namespace Homeworks.SaveLoad
         {
             var resources = resourceManager.GetResources();
             var resourceData = resources.ConvertAll(ConvertUnitToData);
-            var resourceDataStorage = new ResourceDataStorage(resourceData);
+
+            var resourceDataStorage = new ResourceDataStorage
+            {
+                Resources = resourceData
+            };
 
             gameRepository.SetData(resourceDataStorage);
             Debug.Log($"Resources saved, amount of saved {resources.Count}");
@@ -29,11 +34,13 @@ namespace Homeworks.SaveLoad
 
         private ResourceData ConvertUnitToData(ResourceObject resource)
         {
-            return new ResourceData(
-                resourceTypeUid: resource.resourceTypeUid,
-                resourceType: resource.resourceType,
-                remainingCount: resource.remainingCount
-            );
+            return new ResourceData
+            {
+                ResourceTypeUid = resource.resourceTypeUid,
+                ResourceType = resource.resourceType,
+                RemainingCount = resource.remainingCount,
+                TransformData = TransformData.FromTransform(resource.transform)
+            };
         }
 
         public void LoadData()
@@ -47,42 +54,32 @@ namespace Homeworks.SaveLoad
 
         private void LoadResource(ResourceData resourceData)
         {
+            var transformData = resourceData.TransformData;
             var createResourceCommand = new CreateResourceCommand(
                 resourceData.ResourceTypeUid,
                 resourceData.ResourceType,
-                resourceData.RemainingCount
+                resourceData.RemainingCount,
+                transformData.GetPositionAsVector3(),
+                transformData.GetRotationAsQuaternion(),
+                transformData.GetScaleAsVector3()
             );
 
             resourceManager.CreateResource(createResourceCommand);
         }
 
         [Serializable]
-        private class ResourceDataStorage
+        public class ResourceDataStorage
         {
-            public List<ResourceData> Resources { get; }
-
-            public ResourceDataStorage(List<ResourceData> resources)
-            {
-                Resources = resources;
-            }
+            public List<ResourceData> Resources { get; set; }
         }
 
         [Serializable]
-        private class ResourceData
+        public class ResourceData
         {
-            public string ResourceTypeUid { get; }
-            public ResourceType ResourceType { get; }
-            public int RemainingCount { get; }
-
-            public ResourceData(
-                string resourceTypeUid,
-                ResourceType resourceType,
-                int remainingCount)
-            {
-                ResourceTypeUid = resourceTypeUid;
-                ResourceType = resourceType;
-                RemainingCount = remainingCount;
-            }
+            public string ResourceTypeUid { get; set; }
+            public ResourceType ResourceType { get; set; }
+            public int RemainingCount { get; set; }
+            public TransformData TransformData { get; set; }
         }
     }
 }

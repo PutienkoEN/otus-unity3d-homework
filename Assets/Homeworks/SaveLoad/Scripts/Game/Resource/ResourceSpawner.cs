@@ -37,6 +37,15 @@ namespace Homeworks.SaveLoad
             resource.resourceType = createResourceCommand.ResourceType;
             resource.remainingCount = createResourceCommand.RemainingCount;
 
+
+            var resourceTransform = resource.transform;
+            resourceTransform.position = createResourceCommand.Position;
+            resourceTransform.rotation = createResourceCommand.Rotation;
+            resourceTransform.localScale = createResourceCommand.Scale;
+
+            // resource.transform.SetPositionAndRotation(createResourceCommand.Position, Quaternion.identity);;
+
+
             return resource;
         }
     }

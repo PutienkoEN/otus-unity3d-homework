@@ -42,7 +42,10 @@ namespace Homeworks.SaveLoad
 
         public void Save()
         {
-            var serializedContext = JsonConvert.SerializeObject(context);
+            var serializedContext = JsonConvert.SerializeObject(context, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
             PlayerPrefs.SetString(GameContextProperty, serializedContext);
         }
     }
