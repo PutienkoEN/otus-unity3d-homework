@@ -10,10 +10,6 @@ namespace Homeworks.SaveLoad
                 .Bind<MyGameManager>()
                 .FromComponentInHierarchy()
                 .AsSingle();
-
-            Container
-                .Bind<MyGameRepository>()
-                .AsSingle();
         }
     }
 }

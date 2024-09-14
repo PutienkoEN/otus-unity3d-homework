@@ -2,7 +2,7 @@ using Zenject;
 
 namespace Homeworks.SaveLoad
 {
-    public class SaveLoaderInstaller : MonoInstaller
+    public class SaveLoadInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
@@ -14,6 +14,11 @@ namespace Homeworks.SaveLoad
                 .Bind<SaveLoadManager>()
                 .AsSingle()
                 .NonLazy();
+
+
+            Container
+                .Bind<MyGameRepository>()
+                .AsSingle();
         }
     }
 }
