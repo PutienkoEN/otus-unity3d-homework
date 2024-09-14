@@ -35,6 +35,7 @@ namespace Homeworks.SaveLoad
         private void LoadUnit(UnitSaveData unitSaveData)
         {
             var unitSpawnCommand = new UnitCreateCommand(
+                unitSaveData.UnitTypeUid,
                 unitSaveData.HitPoints,
                 unitSaveData.Damage,
                 unitSaveData.Speed,
@@ -49,15 +50,15 @@ namespace Homeworks.SaveLoad
         private static UnitSaveData ConvertUnitToData(UnitObject unit)
         {
             var unitTransform = unit.transform;
-            return new UnitSaveData
-            {
-                HitPoints = unit.hitPoints,
-                Damage = unit.damage,
-                Speed = unit.speed,
-                Position = Vector3ToArray(unitTransform.position),
-                Rotation = QuaternionToArray(unitTransform.rotation),
-                Scale = Vector3ToArray(unitTransform.localScale)
-            };
+
+            return new UnitSaveData(
+                unitTypeUid: unit.unitTypeUid,
+                hitPoints: unit.hitPoints,
+                damage: unit.damage,
+                speed: unit.speed,
+                position: Vector3ToArray(unitTransform.position),
+                rotation: QuaternionToArray(unitTransform.rotation),
+                scale: Vector3ToArray(unitTransform.localScale));
         }
 
         private static float[] Vector3ToArray(Vector3 gameObjectPosition)
@@ -96,12 +97,31 @@ namespace Homeworks.SaveLoad
         [Serializable]
         public class UnitSaveData
         {
-            public int HitPoints { get; set; }
-            public int Speed { get; set; }
-            public int Damage { get; set; }
-            public float[] Position { get; set; }
-            public float[] Rotation { get; set; }
-            public float[] Scale { get; set; }
+            public string UnitTypeUid { get; }
+            public int HitPoints { get; }
+            public int Speed { get; }
+            public int Damage { get; }
+            public float[] Position { get; }
+            public float[] Rotation { get; }
+            public float[] Scale { get; }
+
+            public UnitSaveData(
+                string unitTypeUid,
+                int hitPoints,
+                int speed,
+                int damage,
+                float[] position,
+                float[] rotation,
+                float[] scale)
+            {
+                UnitTypeUid = unitTypeUid;
+                HitPoints = hitPoints;
+                Speed = speed;
+                Damage = damage;
+                Position = position;
+                Rotation = rotation;
+                Scale = scale;
+            }
         }
     }
 }

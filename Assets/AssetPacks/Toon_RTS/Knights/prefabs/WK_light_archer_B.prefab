@@ -1704,6 +1704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b30195530774198a17c549ed1b85bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitTypeUid: WK_Archer_Light
   hitPoints: 10
   speed: 7
   damage: 3

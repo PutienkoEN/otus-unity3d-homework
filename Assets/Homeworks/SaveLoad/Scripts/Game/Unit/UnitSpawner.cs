@@ -15,6 +15,8 @@ namespace Homeworks.SaveLoad
         {
             var unit = Object.Instantiate(unitPrefab);
 
+            unit.unitTypeUid = unitCreateCommand.UnitTypeUid;
+                
             unit.hitPoints = unitCreateCommand.HitPoints;
             unit.speed = unitCreateCommand.Speed;
             unit.damage = unitCreateCommand.Damage;

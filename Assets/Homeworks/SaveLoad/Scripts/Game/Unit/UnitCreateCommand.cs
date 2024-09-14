@@ -4,6 +4,7 @@ namespace Homeworks.SaveLoad
 {
     public class UnitCreateCommand
     {
+        public string UnitTypeUid { get; }
         public int HitPoints { get; }
         public int Speed { get; }
         public int Damage { get; }
@@ -13,6 +14,7 @@ namespace Homeworks.SaveLoad
         public Vector3 Scale { get; }
 
         public UnitCreateCommand(
+            string unitTypeUid,
             int hitPoints,
             int speed,
             int damage,
@@ -20,6 +22,7 @@ namespace Homeworks.SaveLoad
             Quaternion rotation,
             Vector3 scale)
         {
+            UnitTypeUid = unitTypeUid;
             HitPoints = hitPoints;
             Speed = speed;
             Damage = damage;

@@ -1570,6 +1570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b30195530774198a17c549ed1b85bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitTypeUid: Ork_Shaman
   hitPoints: 12
   speed: 3
   damage: 7
