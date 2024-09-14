@@ -15,10 +15,11 @@ namespace Homeworks.SaveLoad
         [Inject]
         public UnitManager(UnitSpawner unitSpawner, UnitObject[] units)
         {
-            this.units = units.ToList();
-            this.units.ForEach(unit => unit.OnViewDestroy += OnViewDestroy);
-
             this.unitSpawner = unitSpawner;
+
+            this.units = units.ToList();
+            this.units
+                .ForEach(unit => unit.OnViewDestroy += OnViewDestroy);
         }
 
         private void OnViewDestroy(UnitObject unit)

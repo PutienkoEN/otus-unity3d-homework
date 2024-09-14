@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92cc34cfc3244b2b8878d8fec2e705a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceTypeUid: Stone
   resourceType: 3
   remainingCount: 25
 --- !u!1 &5287069010646736326

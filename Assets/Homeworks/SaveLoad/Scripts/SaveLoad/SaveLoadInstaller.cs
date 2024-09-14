@@ -11,10 +11,13 @@ namespace Homeworks.SaveLoad
                 .AsSingle();
 
             Container
+                .BindInterfacesAndSelfTo<ResourceSaveLoader>()
+                .AsSingle();
+
+            Container
                 .Bind<SaveLoadManager>()
                 .AsSingle()
                 .NonLazy();
-
 
             Container
                 .Bind<MyGameRepository>()
