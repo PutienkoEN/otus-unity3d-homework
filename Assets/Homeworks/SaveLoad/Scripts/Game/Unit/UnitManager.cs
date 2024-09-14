@@ -1,15 +1,19 @@
 using System.Collections.Generic;
-using Sirenix.Utilities;
+using System.Linq;
+using Zenject;
 
 namespace Homeworks.SaveLoad
 {
     public class UnitManager
     {
-        private readonly List<UnitObject> units = new();
+        private readonly UnitSpawner unitSpawner;
+        private readonly List<UnitObject> units;
 
-        public UnitManager(UnitObject[] units)
+        [Inject]
+        public UnitManager(UnitSpawner unitSpawner, UnitObject[] units)
         {
-            this.units.AddRange(units);
+            this.units = units.ToList();
+            this.unitSpawner = unitSpawner;
         }
 
         public List<UnitObject> GetUnits()
@@ -17,9 +21,10 @@ namespace Homeworks.SaveLoad
             return units;
         }
 
-        public void AddUnits(List<UnitObject> unit)
+        public void CreateUnit(UnitCreateCommand unitCreateCommand)
         {
-            
+            var unit = unitSpawner.SpawnUnit(unitCreateCommand);
+            units.Add(unit);
         }
     }
 }
