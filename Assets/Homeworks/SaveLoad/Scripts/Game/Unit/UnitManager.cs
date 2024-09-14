@@ -1,19 +1,30 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Zenject;
 
 namespace Homeworks.SaveLoad
 {
+    [Serializable]
     public class UnitManager
     {
         private readonly UnitSpawner unitSpawner;
-        private readonly List<UnitObject> units;
+        [SerializeReference] private readonly List<UnitObject> units;
 
         [Inject]
         public UnitManager(UnitSpawner unitSpawner, UnitObject[] units)
         {
             this.units = units.ToList();
+            this.units.ForEach(unit => unit.OnViewDestroy += OnViewDestroy);
+
             this.unitSpawner = unitSpawner;
+        }
+
+        private void OnViewDestroy(UnitObject unit)
+        {
+            units.Remove(unit);
+            unit.OnViewDestroy -= OnViewDestroy;
         }
 
         public List<UnitObject> GetUnits()
@@ -24,6 +35,7 @@ namespace Homeworks.SaveLoad
         public void CreateUnit(UnitCreateCommand unitCreateCommand)
         {
             var unit = unitSpawner.SpawnUnit(unitCreateCommand);
+            unit.OnViewDestroy += OnViewDestroy;
             units.Add(unit);
         }
     }

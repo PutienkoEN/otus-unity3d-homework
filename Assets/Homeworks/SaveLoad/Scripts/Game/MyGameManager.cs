@@ -8,10 +8,13 @@ namespace Homeworks.SaveLoad
     {
         private SaveLoadManager saveLoadManager;
 
+        [SerializeReference] private UnitManager unitManager;
+
         [Inject]
-        public void Construct(SaveLoadManager saveLoadManager)
+        public void Construct(SaveLoadManager saveLoadManager, UnitManager unitManager)
         {
             this.saveLoadManager = saveLoadManager;
+            this.unitManager = unitManager;
         }
 
         [Button]
