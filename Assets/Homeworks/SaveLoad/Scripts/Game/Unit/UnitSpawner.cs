@@ -1,22 +1,39 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace Homeworks.SaveLoad
 {
     public class UnitSpawner
     {
-        private readonly UnitObject unitPrefab;
+        private readonly Transform unitContainer;
+        private readonly Dictionary<string, UnitObject> unitPrefabs;
 
-        public UnitSpawner(UnitObject unitPrefab)
+        [Inject]
+        public UnitSpawner(Transform unitContainer, List<UnitObject> unitPrefabs)
         {
-            this.unitPrefab = unitPrefab;
+            this.unitContainer = unitContainer;
+            this.unitPrefabs = unitPrefabs
+                .ToDictionary(unit => unit.unitTypeUid, unit => unit);
         }
 
         public UnitObject SpawnUnit(UnitCreateCommand unitCreateCommand)
         {
-            var unit = Object.Instantiate(unitPrefab);
+            var unitUnitTypeUid = unitCreateCommand.UnitTypeUid;
+            if (!unitPrefabs.TryGetValue(unitUnitTypeUid, out UnitObject unitPrefab))
+            {
+                throw new KeyNotFoundException($"There is no unit prefab for uid {unitCreateCommand.UnitTypeUid}");
+            }
 
+            var unit = Object.Instantiate(unitPrefab, unitContainer, true);
+
+            return UnitSetup(unit, unitCreateCommand);
+        }
+
+        private static UnitObject UnitSetup(UnitObject unit, UnitCreateCommand unitCreateCommand)
+        {
             unit.unitTypeUid = unitCreateCommand.UnitTypeUid;
-                
             unit.hitPoints = unitCreateCommand.HitPoints;
             unit.speed = unitCreateCommand.Speed;
             unit.damage = unitCreateCommand.Damage;

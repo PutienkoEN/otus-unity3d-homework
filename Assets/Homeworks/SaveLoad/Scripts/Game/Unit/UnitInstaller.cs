@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -5,7 +6,8 @@ namespace Homeworks.SaveLoad
 {
     public class UnitInstaller : MonoInstaller
     {
-        [SerializeField] private UnitObject unitPrefab;
+        [SerializeField] private Transform unitContainer;
+        [SerializeField] private List<UnitObject> unitPrefab;
 
         public override void InstallBindings()
         {
@@ -21,7 +23,7 @@ namespace Homeworks.SaveLoad
             Container
                 .Bind<UnitSpawner>()
                 .AsSingle()
-                .WithArguments(unitPrefab);
+                .WithArguments(unitContainer, unitPrefab);
         }
     }
 }
