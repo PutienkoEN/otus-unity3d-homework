@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Zenject;
 
 namespace Homeworks.SaveLoad
@@ -35,6 +36,13 @@ namespace Homeworks.SaveLoad
             var resource = resourceSpawner.SpawnResource(resourceCreate);
             resource.OnViewDestroy += OnViewDestroy;
             resources.Add(resource);
+        }
+
+        public void RemoveAllResources()
+        {
+            resources
+                .ConvertAll(resource => resource.gameObject)
+                .ForEach(Object.Destroy);
         }
     }
 }

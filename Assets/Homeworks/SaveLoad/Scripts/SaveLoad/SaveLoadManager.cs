@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using Zenject;
 
 namespace Homeworks.SaveLoad
@@ -16,14 +15,12 @@ namespace Homeworks.SaveLoad
             this.gameRepository = gameRepository;
         }
 
-        [Button]
         public void SaveGame()
         {
             saveLoaders.ForEach(saveLoader => saveLoader.SaveData());
             gameRepository.Save();
         }
 
-        [Button]
         public void LoadGame()
         {
             gameRepository.Load();
