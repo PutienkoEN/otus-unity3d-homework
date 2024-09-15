@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 namespace Homeworks.SaveLoad.Scripts.Persistance
 {
@@ -6,6 +7,7 @@ namespace Homeworks.SaveLoad.Scripts.Persistance
     {
         private readonly string gameContextProperty;
 
+        [Inject]
         public SimplePersistingStrategy(string gameContextProperty)
         {
             this.gameContextProperty = gameContextProperty;

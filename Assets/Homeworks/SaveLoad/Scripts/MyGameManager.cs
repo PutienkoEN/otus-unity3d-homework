@@ -11,8 +11,8 @@ namespace Homeworks.SaveLoad
     {
         private SaveLoadManager saveLoadManager;
 
-        [SerializeReference] private UnitManager unitManager;
-        [SerializeReference] private ResourceManager resourceManager;
+        private UnitManager unitManager;
+        private ResourceManager resourceManager;
 
         [Inject]
         public void Construct(

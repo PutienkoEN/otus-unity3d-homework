@@ -48,7 +48,7 @@ namespace Homeworks.SaveLoad
             return resourceObject;
         }
 
-        private void SetupResourceData(ResourceObject resource, ResourceCreateCommand resourceCreateCommand)
+        private static void SetupResourceData(ResourceObject resource, ResourceCreateCommand resourceCreateCommand)
         {
             resource.resourceTypeUid = resourceCreateCommand.ResourceTypeUid;
             resource.resourceType = resourceCreateCommand.ResourceType;
