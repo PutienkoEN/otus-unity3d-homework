@@ -22,10 +22,7 @@ namespace Homeworks.SaveLoad
             var resources = resourceManager.GetResources();
             var resourceData = resources.ConvertAll(ConvertUnitToData);
 
-            return new ResourceDataStorage
-            {
-                Resources = resourceData
-            };
+            return new ResourceDataStorage { Resources = resourceData };
         }
 
         private static ResourceData ConvertUnitToData(ResourceObject resource)

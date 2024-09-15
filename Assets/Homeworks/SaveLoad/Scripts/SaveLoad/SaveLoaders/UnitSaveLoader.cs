@@ -1,58 +1,28 @@
 using System;
 using System.Collections.Generic;
 using Homeworks.SaveLoad.Data;
-using UnityEngine;
+using Zenject;
 
 namespace Homeworks.SaveLoad
 {
-    public class UnitSaveLoader : ISaveLoader
+    public class UnitSaveLoader : AbstractSaveLoader<UnitSaveLoader.UnitDataStorage>
     {
         private readonly UnitManager unitManager;
-        private readonly MyGameRepository gameRepository;
 
-        public UnitSaveLoader(UnitManager unitManager, MyGameRepository gameRepository)
+        [Inject]
+        public UnitSaveLoader(
+            MyGameRepository gameRepository,
+            UnitManager unitManager) : base(gameRepository)
         {
             this.unitManager = unitManager;
-            this.gameRepository = gameRepository;
         }
 
-        public void SaveData()
+        protected override UnitDataStorage GetDataToSave()
         {
             var units = unitManager.GetUnits();
             var unitData = units.ConvertAll(ConvertUnitToData);
 
-            var unitDataStorage = new UnitDataStorage
-            {
-                Units = unitData
-            };
-
-            gameRepository.SetData(unitDataStorage);
-            Debug.Log($"Units saved, amount of saved {units.Count}");
-        }
-
-        public void LoadData()
-        {
-            if (gameRepository.TryGetData<UnitDataStorage>(out var unitsData))
-            {
-                unitsData.Units.ForEach(LoadUnit);
-                Debug.Log($"Units loaded, amount of loaded {unitsData.Units.Count}");
-            }
-        }
-
-        private void LoadUnit(UnitSaveData unitSaveData)
-        {
-            var transformData = unitSaveData.TransformData;
-            var unitSpawnCommand = new UnitCreateCommand(
-                unitSaveData.UnitTypeUid,
-                unitSaveData.HitPoints,
-                unitSaveData.Damage,
-                unitSaveData.Speed,
-                transformData.GetPositionAsVector3(),
-                transformData.GetRotationAsQuaternion(),
-                transformData.GetScaleAsVector3()
-            );
-
-            unitManager.CreateUnit(unitSpawnCommand);
+            return new UnitDataStorage { Units = unitData };
         }
 
         private static UnitSaveData ConvertUnitToData(UnitObject unit)
@@ -67,14 +37,35 @@ namespace Homeworks.SaveLoad
             };
         }
 
+        protected override void HandleDataLoad(UnitDataStorage savedData)
+        {
+            savedData.Units
+                .ConvertAll(ConvertDataToUnit)
+                .ForEach(unitManager.CreateUnit);
+        }
+
+        private UnitCreateCommand ConvertDataToUnit(UnitSaveData unitSaveData)
+        {
+            var transformData = unitSaveData.TransformData;
+            return new UnitCreateCommand(
+                unitSaveData.UnitTypeUid,
+                unitSaveData.HitPoints,
+                unitSaveData.Damage,
+                unitSaveData.Speed,
+                transformData.GetPositionAsVector3(),
+                transformData.GetRotationAsQuaternion(),
+                transformData.GetScaleAsVector3()
+            );
+        }
+
         [Serializable]
-        private class UnitDataStorage
+        public class UnitDataStorage
         {
             public List<UnitSaveData> Units { get; set; }
         }
 
         [Serializable]
-        private class UnitSaveData
+        public class UnitSaveData
         {
             public string UnitTypeUid { get; set; }
             public int HitPoints { get; set; }
