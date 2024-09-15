@@ -68,13 +68,13 @@ namespace Homeworks.SaveLoad
         }
 
         [Serializable]
-        public class ResourceDataStorage
+        private class ResourceDataStorage
         {
             public List<ResourceData> Resources { get; set; }
         }
 
         [Serializable]
-        public class ResourceData
+        private class ResourceData
         {
             public string ResourceTypeUid { get; set; }
             public ResourceType ResourceType { get; set; }
