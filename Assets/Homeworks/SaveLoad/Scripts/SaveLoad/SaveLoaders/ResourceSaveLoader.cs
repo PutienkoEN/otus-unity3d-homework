@@ -1,38 +1,34 @@
 using System;
 using System.Collections.Generic;
 using Homeworks.SaveLoad.Data;
-using UnityEngine;
 using Zenject;
 
 namespace Homeworks.SaveLoad
 {
-    public class ResourceSaveLoader : ISaveLoader
+    public class ResourceSaveLoader : AbstractSaveLoader<ResourceSaveLoader.ResourceDataStorage>
     {
         private readonly ResourceManager resourceManager;
-        private readonly MyGameRepository gameRepository;
 
         [Inject]
-        public ResourceSaveLoader(ResourceManager resourceManager, MyGameRepository gameRepository)
+        public ResourceSaveLoader(
+            MyGameRepository gameRepository,
+            ResourceManager resourceManager) : base(gameRepository)
         {
             this.resourceManager = resourceManager;
-            this.gameRepository = gameRepository;
         }
 
-        public void SaveData()
+        protected override ResourceDataStorage GetDataToSave()
         {
             var resources = resourceManager.GetResources();
             var resourceData = resources.ConvertAll(ConvertUnitToData);
 
-            var resourceDataStorage = new ResourceDataStorage
+            return new ResourceDataStorage
             {
                 Resources = resourceData
             };
-
-            gameRepository.SetData(resourceDataStorage);
-            Debug.Log($"Resources saved, amount of saved {resources.Count}");
         }
 
-        private ResourceData ConvertUnitToData(ResourceObject resource)
+        private static ResourceData ConvertUnitToData(ResourceObject resource)
         {
             return new ResourceData
             {
@@ -43,13 +39,10 @@ namespace Homeworks.SaveLoad
             };
         }
 
-        public void LoadData()
+        protected override void HandleDataLoad(ResourceDataStorage savedData)
         {
-            if (gameRepository.TryGetData<ResourceDataStorage>(out var resourceDataStorage))
-            {
-                resourceDataStorage.Resources.ForEach(LoadResource);
-                Debug.Log($"Resources loaded, amount of loaded {resourceDataStorage.Resources.Count}");
-            }
+            savedData.Resources
+                .ForEach(LoadResource);
         }
 
         private void LoadResource(ResourceData resourceData)
@@ -68,13 +61,13 @@ namespace Homeworks.SaveLoad
         }
 
         [Serializable]
-        private class ResourceDataStorage
+        public class ResourceDataStorage
         {
             public List<ResourceData> Resources { get; set; }
         }
 
         [Serializable]
-        private class ResourceData
+        public class ResourceData
         {
             public string ResourceTypeUid { get; set; }
             public ResourceType ResourceType { get; set; }
