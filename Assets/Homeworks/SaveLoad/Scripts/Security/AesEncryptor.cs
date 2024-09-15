@@ -2,18 +2,24 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Zenject;
 
 namespace Homeworks.SaveLoad.Scripts.Security
 {
     public class AesEncryptor
     {
-        private static readonly string EncriptionKey =
-            "72pg68Mczouyk658jsEux1SLXkli7MlyBuLsqh8I2S0r3819btORCEKj3wUgh6Q5";
+        private readonly string encryptionKey;
 
-        public static string Encrypt(string plainText)
+        [Inject]
+        public AesEncryptor(string encryptionKey)
+        {
+            this.encryptionKey = encryptionKey;
+        }
+
+        public string Encrypt(string plainText)
         {
             using var aes = Aes.Create();
-            aes.Key = Encoding.UTF8.GetBytes(EncriptionKey);
+            aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
             aes.GenerateIV();
 
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
@@ -28,10 +34,10 @@ namespace Homeworks.SaveLoad.Scripts.Security
             return Convert.ToBase64String(memoryStream.ToArray());
         }
 
-        public static string Decrypt(string cipherText)
+        public string Decrypt(string cipherText)
         {
             var fullCipher = Convert.FromBase64String(cipherText);
-            var key = Encoding.UTF8.GetBytes(EncriptionKey);
+            var key = Encoding.UTF8.GetBytes(encryptionKey);
 
             using var aes = Aes.Create();
             aes.Key = key;

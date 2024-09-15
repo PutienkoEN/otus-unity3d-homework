@@ -1,3 +1,4 @@
+using Homeworks.SaveLoad.Scripts.Security;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,9 @@ namespace Homeworks.SaveLoad.Scripts.Persistance
     {
         [SerializeField] private string gameContextProperty = "Lesson/GameState";
 
+        [SerializeField] private string encryptionKey =
+            "72pg68Mczouyk658jsEux1SLXkli7MlyBuLsqh8I2S0r3819btORCEKj3wUgh6Q5";
+
         public override void InstallBindings()
         {
             Container
@@ -14,9 +18,14 @@ namespace Homeworks.SaveLoad.Scripts.Persistance
                 .AsSingle();
 
             Container
-                .BindInterfacesAndSelfTo<SimplePersistingStrategy>()
+                .Bind<AesEncryptor>()
                 .AsSingle()
-                .WithArguments(gameContextProperty);
+                .WithArguments(encryptionKey);
+
+            Container
+                .BindInterfacesAndSelfTo<AesPersistingStrategy>()
+                .AsSingle()
+                .WithArguments(new SimplePersistingStrategy(gameContextProperty));
         }
     }
 }
