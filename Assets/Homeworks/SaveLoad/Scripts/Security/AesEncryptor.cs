@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Zenject;
@@ -9,6 +8,7 @@ namespace Homeworks.SaveLoad.Scripts.Security
     public class AesEncryptor
     {
         private readonly string encryptionKey;
+        private readonly byte[] ivStored = new byte[16];
 
         [Inject]
         public AesEncryptor(string encryptionKey)
@@ -18,42 +18,48 @@ namespace Homeworks.SaveLoad.Scripts.Security
 
         public string Encrypt(string plainText)
         {
-            using var aes = Aes.Create();
-            aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
-            aes.GenerateIV();
+            var plainBytes = Encoding.UTF8.GetBytes(plainText);
 
-            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-            using var memoryStream = new MemoryStream();
+            var encryptedBytes = EncryptBytes(plainBytes);
 
-            memoryStream.Write(aes.IV, 0, aes.IV.Length);
-            using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-            using var streamWriter = new StreamWriter(cryptoStream);
-
-            streamWriter.Write(plainText);
-
-            return Convert.ToBase64String(memoryStream.ToArray());
+            return Convert.ToBase64String(encryptedBytes);
         }
 
         public string Decrypt(string cipherText)
         {
-            var fullCipher = Convert.FromBase64String(cipherText);
-            var key = Encoding.UTF8.GetBytes(encryptionKey);
+            var cipherBytes = Convert.FromBase64String(cipherText);
 
+            var decryptedBytes = DecryptBytes(cipherBytes);
+
+            return Encoding.UTF8.GetString(decryptedBytes);
+        }
+
+        private byte[] EncryptBytes(byte[] plainBytes)
+        {
             using var aes = Aes.Create();
-            aes.Key = key;
+            ConfigureAes(aes);
 
-            var iv = new byte[aes.BlockSize / 8];
-            var cipher = new byte[fullCipher.Length - iv.Length];
+            using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            var encryptedBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
+            return encryptedBytes;
+        }
 
-            aes.IV = iv;
+        private byte[] DecryptBytes(byte[] cipherBytes)
+        {
+            using var aes = Aes.Create();
+            ConfigureAes(aes);
 
-            var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            using var decryptor = aes.CreateDecryptor();
+            var decryptedBytes = decryptor.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
+            return decryptedBytes;
+        }
 
-            using var memoryStream = new MemoryStream(cipher);
-            using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            using var streamReader = new StreamReader(cryptoStream);
-
-            return streamReader.ReadToEnd();
+        private void ConfigureAes(Aes aes)
+        {
+            aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
+            aes.IV = ivStored;
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
         }
     }
 }

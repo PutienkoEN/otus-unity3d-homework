@@ -1160,6 +1160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameContextProperty: Lesson/GameState
+  encryptionKey: Lesson/GameState
 --- !u!1001 &1298357891
 PrefabInstance:
   m_ObjectHideFlags: 0
