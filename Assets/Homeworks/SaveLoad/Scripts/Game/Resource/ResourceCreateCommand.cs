@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Homeworks.SaveLoad
 {
-    public class CreateResourceCommand
+    public class ResourceCreateCommand
     {
         public string ResourceTypeUid { get; }
         public ResourceType ResourceType { get; }
@@ -11,7 +11,7 @@ namespace Homeworks.SaveLoad
         public Quaternion Rotation { get; }
         public Vector3 Scale { get; }
 
-        public CreateResourceCommand(
+        public ResourceCreateCommand(
             string resourceTypeUid,
             ResourceType resourceType,
             int remainingCount,

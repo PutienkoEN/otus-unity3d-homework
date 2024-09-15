@@ -30,9 +30,9 @@ namespace Homeworks.SaveLoad
             return resources;
         }
 
-        public void CreateResource(CreateResourceCommand createResource)
+        public void CreateResource(ResourceCreateCommand resourceCreate)
         {
-            var resource = resourceSpawner.SpawnResource(createResource);
+            var resource = resourceSpawner.SpawnResource(resourceCreate);
             resource.OnViewDestroy += OnViewDestroy;
             resources.Add(resource);
         }

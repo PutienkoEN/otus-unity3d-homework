@@ -20,12 +20,12 @@ namespace Homeworks.SaveLoad
         protected override ResourceDataStorage GetDataToSave()
         {
             var resources = resourceManager.GetResources();
-            var resourceData = resources.ConvertAll(ConvertUnitToData);
+            var resourceData = resources.ConvertAll(ConvertToSaveData);
 
             return new ResourceDataStorage { Resources = resourceData };
         }
 
-        private static ResourceData ConvertUnitToData(ResourceObject resource)
+        private static ResourceData ConvertToSaveData(ResourceObject resource)
         {
             return new ResourceData
             {
@@ -39,13 +39,14 @@ namespace Homeworks.SaveLoad
         protected override void HandleDataLoad(ResourceDataStorage savedData)
         {
             savedData.Resources
-                .ForEach(LoadResource);
+                .ConvertAll(ConvertFromSaveData)
+                .ForEach(resourceManager.CreateResource);
         }
 
-        private void LoadResource(ResourceData resourceData)
+        private static ResourceCreateCommand ConvertFromSaveData(ResourceData resourceData)
         {
             var transformData = resourceData.TransformData;
-            var createResourceCommand = new CreateResourceCommand(
+            return new ResourceCreateCommand(
                 resourceData.ResourceTypeUid,
                 resourceData.ResourceType,
                 resourceData.RemainingCount,
@@ -53,8 +54,6 @@ namespace Homeworks.SaveLoad
                 transformData.GetRotationAsQuaternion(),
                 transformData.GetScaleAsVector3()
             );
-
-            resourceManager.CreateResource(createResourceCommand);
         }
 
         [Serializable]

@@ -4,7 +4,7 @@ namespace Homeworks.SaveLoad
     {
         private readonly MyGameRepository gameRepository;
 
-        public AbstractSaveLoader(MyGameRepository gameRepository)
+        protected AbstractSaveLoader(MyGameRepository gameRepository)
         {
             this.gameRepository = gameRepository;
         }

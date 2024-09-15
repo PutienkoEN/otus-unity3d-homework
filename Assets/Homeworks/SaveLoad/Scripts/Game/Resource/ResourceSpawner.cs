@@ -18,41 +18,41 @@ namespace Homeworks.SaveLoad
                 .ToDictionary(resource => resource.resourceTypeUid, resource => resource);
         }
 
-        public ResourceObject SpawnResource(CreateResourceCommand createResourceCommand)
+        public ResourceObject SpawnResource(ResourceCreateCommand resourceCreateCommand)
         {
-            if (!resourcePrefabs.TryGetValue(createResourceCommand.ResourceTypeUid, out ResourceObject resourcePrefab))
+            if (!resourcePrefabs.TryGetValue(resourceCreateCommand.ResourceTypeUid, out ResourceObject resourcePrefab))
             {
                 throw new KeyNotFoundException(
-                    $"There is no resource prefab for uid {createResourceCommand.ResourceType}");
+                    $"There is no resource prefab for uid {resourceCreateCommand.ResourceType}");
             }
 
-            var resourceObject = CreateGameObject(createResourceCommand, resourcePrefab);
-            SetupResourceData(resourceObject, createResourceCommand);
+            var resourceObject = CreateGameObject(resourceCreateCommand, resourcePrefab);
+            SetupResourceData(resourceObject, resourceCreateCommand);
 
             return resourceObject;
         }
 
         private ResourceObject CreateGameObject(
-            CreateResourceCommand createResourceCommand,
+            ResourceCreateCommand resourceCreateCommand,
             ResourceObject resourcePrefab)
         {
             var resourceObject = Object.Instantiate(
                 resourcePrefab,
-                createResourceCommand.Position,
-                createResourceCommand.Rotation,
+                resourceCreateCommand.Position,
+                resourceCreateCommand.Rotation,
                 resourceContainer
             );
 
-            resourceObject.transform.localScale = createResourceCommand.Scale;
+            resourceObject.transform.localScale = resourceCreateCommand.Scale;
 
             return resourceObject;
         }
 
-        private void SetupResourceData(ResourceObject resource, CreateResourceCommand createResourceCommand)
+        private void SetupResourceData(ResourceObject resource, ResourceCreateCommand resourceCreateCommand)
         {
-            resource.resourceTypeUid = createResourceCommand.ResourceTypeUid;
-            resource.resourceType = createResourceCommand.ResourceType;
-            resource.remainingCount = createResourceCommand.RemainingCount;
+            resource.resourceTypeUid = resourceCreateCommand.ResourceTypeUid;
+            resource.resourceType = resourceCreateCommand.ResourceType;
+            resource.remainingCount = resourceCreateCommand.RemainingCount;
         }
     }
 }

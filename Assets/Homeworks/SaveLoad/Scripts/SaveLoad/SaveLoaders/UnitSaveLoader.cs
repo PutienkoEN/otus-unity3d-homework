@@ -20,12 +20,12 @@ namespace Homeworks.SaveLoad
         protected override UnitDataStorage GetDataToSave()
         {
             var units = unitManager.GetUnits();
-            var unitData = units.ConvertAll(ConvertUnitToData);
+            var unitData = units.ConvertAll(ConvertToSaveData);
 
             return new UnitDataStorage { Units = unitData };
         }
 
-        private static UnitSaveData ConvertUnitToData(UnitObject unit)
+        private static UnitSaveData ConvertToSaveData(UnitObject unit)
         {
             return new UnitSaveData
             {
@@ -40,11 +40,11 @@ namespace Homeworks.SaveLoad
         protected override void HandleDataLoad(UnitDataStorage savedData)
         {
             savedData.Units
-                .ConvertAll(ConvertDataToUnit)
+                .ConvertAll(ConvertFromSaveData)
                 .ForEach(unitManager.CreateUnit);
         }
 
-        private UnitCreateCommand ConvertDataToUnit(UnitSaveData unitSaveData)
+        private static UnitCreateCommand ConvertFromSaveData(UnitSaveData unitSaveData)
         {
             var transformData = unitSaveData.TransformData;
             return new UnitCreateCommand(
