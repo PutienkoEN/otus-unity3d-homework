@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Homeworks.SaveLoad.Data;
+using Homeworks.SaveLoad.Scripts.Persistance;
 using Zenject;
 
 namespace Homeworks.SaveLoad
@@ -11,7 +12,7 @@ namespace Homeworks.SaveLoad
 
         [Inject]
         public ResourceSaveLoader(
-            MyGameRepository gameRepository,
+            GameContextRepository gameRepository,
             ResourceManager resourceManager) : base(gameRepository)
         {
             this.resourceManager = resourceManager;

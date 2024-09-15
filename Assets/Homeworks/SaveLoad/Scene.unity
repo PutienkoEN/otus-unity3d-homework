@@ -1028,6 +1028,7 @@ GameObject:
   - component: {fileID: 1280606121}
   - component: {fileID: 1280606119}
   - component: {fileID: 1280606120}
+  - component: {fileID: 1280606122}
   m_Layer: 0
   m_Name: '[DI Scene]'
   m_TagString: Untagged
@@ -1073,6 +1074,7 @@ MonoBehaviour:
   - {fileID: 1280606115}
   - {fileID: 1280606121}
   - {fileID: 1280606119}
+  - {fileID: 1280606122}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -1145,6 +1147,19 @@ MonoBehaviour:
   resourcePrefabs:
   - {fileID: 8317805116646253975, guid: c1f0d47dff2a84fd58804c08b41a6f61, type: 3}
   - {fileID: 2552805259716626581, guid: a2fe665d3b93745ca9549a298dd28f01, type: 3}
+--- !u!114 &1280606122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280606114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43844d59465843888b1ac89e3958df08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameContextProperty: Lesson/GameState
 --- !u!1001 &1298357891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2265,6 +2280,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitManager:
+    rid: -2
+  resourceManager:
     rid: -2
   references:
     version: 2

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Homeworks.SaveLoad.Scripts.Persistance;
 using Zenject;
 
 namespace Homeworks.SaveLoad
@@ -6,10 +7,10 @@ namespace Homeworks.SaveLoad
     public class SaveLoadManager
     {
         private readonly List<ISaveLoader> saveLoaders;
-        private readonly MyGameRepository gameRepository;
+        private readonly GameContextRepository gameRepository;
 
         [Inject]
-        public SaveLoadManager(List<ISaveLoader> saveLoaders, MyGameRepository gameRepository)
+        public SaveLoadManager(List<ISaveLoader> saveLoaders, GameContextRepository gameRepository)
         {
             this.saveLoaders = saveLoaders;
             this.gameRepository = gameRepository;

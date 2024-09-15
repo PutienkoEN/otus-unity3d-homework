@@ -1,14 +1,20 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using UnityEngine;
+using Zenject;
 
-namespace Homeworks.SaveLoad
+namespace Homeworks.SaveLoad.Scripts.Persistance
 {
-    public class MyGameRepository
+    public class GameContextRepository
     {
-        private const string GameContextProperty = "Lesson/GameState";
+        private readonly IPersistingStrategy persistingStrategy;
 
         private Dictionary<string, string> context = new();
+
+        [Inject]
+        public GameContextRepository(IPersistingStrategy persistingStrategy)
+        {
+            this.persistingStrategy = persistingStrategy;
+        }
 
         public void SetData<T>(T value)
         {
@@ -28,22 +34,20 @@ namespace Homeworks.SaveLoad
             return false;
         }
 
-        public void Load()
-        {
-            if (!PlayerPrefs.HasKey(GameContextProperty))
-            {
-                Debug.LogError("Failed to load data! There is no saved data to load!");
-                return;
-            }
-
-            var serializedContext = PlayerPrefs.GetString(GameContextProperty);
-            context = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedContext);
-        }
-
         public void Save()
         {
             var serializedContext = JsonConvert.SerializeObject(context);
-            PlayerPrefs.SetString(GameContextProperty, serializedContext);
+            persistingStrategy.Save(serializedContext);
+        }
+
+        public void Load()
+        {
+            if (!persistingStrategy.TryLoad(out var loadedContext))
+            {
+                return;
+            }
+
+            context = JsonConvert.DeserializeObject<Dictionary<string, string>>(loadedContext);
         }
     }
 }

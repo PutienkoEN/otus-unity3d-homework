@@ -1,10 +1,12 @@
+using Homeworks.SaveLoad.Scripts.Persistance;
+
 namespace Homeworks.SaveLoad
 {
     public abstract class AbstractSaveLoader<TData> : ISaveLoader
     {
-        private readonly MyGameRepository gameRepository;
+        private readonly GameContextRepository gameRepository;
 
-        protected AbstractSaveLoader(MyGameRepository gameRepository)
+        protected AbstractSaveLoader(GameContextRepository gameRepository)
         {
             this.gameRepository = gameRepository;
         }

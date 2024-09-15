@@ -18,10 +18,6 @@ namespace Homeworks.SaveLoad
                 .Bind<SaveLoadManager>()
                 .AsSingle()
                 .NonLazy();
-
-            Container
-                .Bind<MyGameRepository>()
-                .AsSingle();
         }
     }
 }

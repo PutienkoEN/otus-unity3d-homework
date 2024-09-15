@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Homeworks.SaveLoad.Data;
+using Homeworks.SaveLoad.Scripts.Persistance;
 using Zenject;
 
 namespace Homeworks.SaveLoad
@@ -11,7 +12,7 @@ namespace Homeworks.SaveLoad
 
         [Inject]
         public UnitSaveLoader(
-            MyGameRepository gameRepository,
+            GameContextRepository gameRepository,
             UnitManager unitManager) : base(gameRepository)
         {
             this.unitManager = unitManager;
