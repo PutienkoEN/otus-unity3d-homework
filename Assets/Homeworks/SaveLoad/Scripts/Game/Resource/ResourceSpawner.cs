@@ -26,27 +26,33 @@ namespace Homeworks.SaveLoad
                     $"There is no resource prefab for uid {createResourceCommand.ResourceType}");
             }
 
-            var resource = Object.Instantiate(resourcePrefab, resourceContainer, true);
+            var resourceObject = CreateGameObject(createResourceCommand, resourcePrefab);
+            SetupResourceData(resourceObject, createResourceCommand);
 
-            return ResourceSetup(resource, createResourceCommand);
+            return resourceObject;
         }
 
-        private ResourceObject ResourceSetup(ResourceObject resource, CreateResourceCommand createResourceCommand)
+        private ResourceObject CreateGameObject(
+            CreateResourceCommand createResourceCommand,
+            ResourceObject resourcePrefab)
+        {
+            var resourceObject = Object.Instantiate(
+                resourcePrefab,
+                createResourceCommand.Position,
+                createResourceCommand.Rotation,
+                resourceContainer
+            );
+
+            resourceObject.transform.localScale = createResourceCommand.Scale;
+
+            return resourceObject;
+        }
+
+        private void SetupResourceData(ResourceObject resource, CreateResourceCommand createResourceCommand)
         {
             resource.resourceTypeUid = createResourceCommand.ResourceTypeUid;
             resource.resourceType = createResourceCommand.ResourceType;
             resource.remainingCount = createResourceCommand.RemainingCount;
-
-
-            var resourceTransform = resource.transform;
-            resourceTransform.position = createResourceCommand.Position;
-            resourceTransform.rotation = createResourceCommand.Rotation;
-            resourceTransform.localScale = createResourceCommand.Scale;
-
-            // resource.transform.SetPositionAndRotation(createResourceCommand.Position, Quaternion.identity);;
-
-
-            return resource;
         }
     }
 }

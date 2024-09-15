@@ -15,7 +15,7 @@ namespace Homeworks.SaveLoad.Data
             return new TransformData
             {
                 Position = Vector3ToArray(transform.position),
-                Rotation = QuaternionToArray(transform.rotation),
+                Rotation = Vector3ToArray(transform.rotation.eulerAngles),
                 Scale = Vector3ToArray(transform.localScale)
             };
         }
@@ -65,7 +65,7 @@ namespace Homeworks.SaveLoad.Data
 
         private static Quaternion QuaternionFromArray(float[] rotation)
         {
-            return new Quaternion(rotation[0], rotation[1], rotation[2], rotation[3]);
+            return Quaternion.Euler(rotation[0], rotation[1], rotation[2]);
         }
     }
 }
